@@ -28,7 +28,7 @@
                 <th>
                     @Html.DisplayNameFor(k => k.Name)
                 </th>
-                <th></th> !2!O5ZZQ1W2t
+                <th></th>
                 <th></th>
             </tr>
             @foreach(var item in Model)
@@ -38,7 +38,7 @@
                         @Html.DisplayFor(k => item.Name)
                     </td>
                     <td>
-                        EDIT | DELETE | DETAILS
+                        <partial name="_TableButton" model="item.Id"/>
                     </td>
                 </tr>
 			}
