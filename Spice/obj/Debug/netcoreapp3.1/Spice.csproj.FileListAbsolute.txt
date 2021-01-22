@@ -467,3 +467,5 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\V
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Category\Create.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_CreateAndBackToListButton.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_TableButton.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_EditAndBackToListButton.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Category\Edit.cshtml.g.cs
