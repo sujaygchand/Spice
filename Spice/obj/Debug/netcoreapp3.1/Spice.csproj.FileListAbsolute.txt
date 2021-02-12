@@ -473,3 +473,14 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\A
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_DeleteAndBackToListButton.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Category\Details.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_DetailsAndBackToListButton.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\SubCategory\Index.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\SubCategory\Create.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_StatusMessage.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\SubCategory\Edit.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\SubCategory\Details.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\SubCategory\Delete.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\MenuItem\Index.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\MenuItem\Create.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\MenuItem\Edit.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\MenuItem\Details.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\MenuItem\Delete.cshtml.g.cs
