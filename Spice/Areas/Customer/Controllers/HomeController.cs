@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Spice.Data;
 using Spice.Models;
+using Spice.Models.ViewModels;
 
 namespace Spice.Controllers
 {
@@ -13,15 +16,24 @@ namespace Spice.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
+		private readonly ApplicationDbContext _db;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
 		{
 			_logger = logger;
+			_db = db;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			var IndexVM = new IndexViewModel()
+			{
+				Coupons = await _db.Coupon.Where(k => k.IsActive).ToListAsync(),
+				Categories = await _db.Category.ToListAsync(),
+				MenuItems = await _db.MenuItem.Include(k => k.Category).Include(k => k.SubCategory).ToListAsync()
+			};
+
+			return View(IndexVM);
 		}
 
 		public IActionResult Privacy()

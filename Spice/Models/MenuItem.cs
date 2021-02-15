@@ -21,7 +21,7 @@ namespace Spice.Models
 			[Display(Name = @"N/A")]
 			NA=0,
 			[Display(Name = "Mild")]
-			Mild =0,
+			Mild =1,
 			[Display(Name = "Spicy")]
 			Spicy =2,
 			[Display(Name = "Very Spicy")]
@@ -44,5 +44,7 @@ namespace Spice.Models
 
 		[Range(0.1f, int.MaxValue, ErrorMessage = " Price should be greater than ${1}")]
 		public double Price { get; set; }
+
+		public string DisplayPrice { get => Price.ToString("n2"); }
 	}
 }
