@@ -85,6 +85,8 @@ namespace Spice.Areas.Identity.Pages.Account
 
 		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
 		{
+			var role = Request.Form["rdUserRole"].ToString();
+
 			returnUrl = returnUrl ?? Url.Content("~/");
 			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 			if (ModelState.IsValid)
@@ -110,9 +112,20 @@ namespace Spice.Areas.Identity.Pages.Account
 					await CreateRoleIfNotValid(StaticDetails.KitchenUser);
 					await CreateRoleIfNotValid(StaticDetails.FrontDeskUser);
 
-					await _userManager.AddToRoleAsync(user, StaticDetails.ManagerUser);
+					if (string.IsNullOrEmpty(role))
+						role = StaticDetails.CustomerEndUser;
+
+					await _userManager.AddToRoleAsync(user, role);
+					
+					if (role == StaticDetails.CustomerEndUser)
+					{
+						await _signInManager.SignInAsync(user, isPersistent: false);
+						return LocalRedirect(returnUrl);
+					}
 
 					_logger.LogInformation("User created a new account with password.");
+					
+					return RedirectToAction("Index", "User", new { area = "Admin"});
 
 					/*var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -139,10 +152,6 @@ namespace Spice.Areas.Identity.Pages.Account
 				{
 					ModelState.AddModelError(string.Empty, error.Description);
 				}*/
-
-					await _signInManager.SignInAsync(user, isPersistent: false);
-					return LocalRedirect(returnUrl);
-
 				}
 
 				foreach (var error in result.Errors)
