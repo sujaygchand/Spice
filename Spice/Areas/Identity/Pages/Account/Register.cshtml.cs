@@ -103,6 +103,7 @@ namespace Spice.Areas.Identity.Pages.Account
 					Country = Input.Country,
 					PhoneNumber = Input.PhoneNumber
 				};
+
 				var result = await _userManager.CreateAsync(user, Input.Password);
 
 				if (result.Succeeded)
