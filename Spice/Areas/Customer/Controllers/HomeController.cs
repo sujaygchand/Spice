@@ -21,13 +21,13 @@ namespace Spice.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly ApplicationDbContext _db;
-
-		private Claim claim;
+		private UserClaim userClaim;
 
 		public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
 		{
 			_logger = logger;
 			_db = db;
+			userClaim = userClaim ?? new UserClaim();
 		}
 
 		public async Task<IActionResult> Index()
@@ -39,12 +39,12 @@ namespace Spice.Controllers
 				MenuItems = await _db.MenuItem.Include(k => k.Category).Include(k => k.SubCategory).ToListAsync()
 			};
 
-			claim = claim ?? GetClaim();
+			var claim = userClaim.GetClaim(User.Identity);
 
 			if (claim != null)
 			{
 				var count = _db.ShoppingCarts.Where(k => k.ApplicationUserId == claim.Value).ToList().Count;
-				HttpContext.Session.SetInt32(SessionDetails.CART_COUNT, count);
+				HttpContext.Session.SetInt32(SessionDetails.SHOPPING_CART_COUNT, count);
 			}
 
 			return View(IndexVM);
@@ -85,7 +85,7 @@ namespace Spice.Controllers
 				return View(tempCart);
 			}
 
-			claim = claim ?? GetClaim();
+			var claim = userClaim.GetClaim(User.Identity);
 			cart.ApplicationUserId = claim.Value;
 
 			var cartFromDb = await _db.ShoppingCarts.Where(k => k.ApplicationUserId == cart.ApplicationUserId
@@ -103,16 +103,9 @@ namespace Spice.Controllers
 			await _db.SaveChangesAsync();
 
 			var count = _db.ShoppingCarts.Where(k => k.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
-			HttpContext.Session.SetInt32(SessionDetails.CART_COUNT, count);
+			HttpContext.Session.SetInt32(SessionDetails.SHOPPING_CART_COUNT, count);
 
 			return RedirectToAction("Index");
-		}
-
-		private Claim GetClaim()
-		{
-			var claimsIdentity = (ClaimsIdentity)User.Identity;
-			claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-			return claim;
 		}
 
 		public IActionResult Privacy()

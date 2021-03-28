@@ -8,6 +8,6 @@ namespace Spice.Utilities
 	public static class SessionDetails
 	{
 
-		public const string CART_COUNT = "ssCartCount";
+		public const string SHOPPING_CART_COUNT = "ssCartCount";
 	}
 }
