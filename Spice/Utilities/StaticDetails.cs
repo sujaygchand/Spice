@@ -7,7 +7,7 @@ namespace Spice.Utilities
 {
 	public static class StaticDetails
 	{
-		public const string DefaultFoodImage = "default_food.png";
+		public const string DEFAULT_FOOD_IMAGE = "default_food.png";
 		
 		// User Roles
 		public const string ManagerUser = "Manager";

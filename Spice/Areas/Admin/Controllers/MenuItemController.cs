@@ -83,7 +83,7 @@ namespace Spice.Areas.Admin.Controllers
 			else
 			{
 				// no file was uploaded
-				var uploads = Path.Combine(webRootPath, @"images\" + StaticDetails.DefaultFoodImage);
+				var uploads = Path.Combine(webRootPath, @"images\" + StaticDetails.DEFAULT_FOOD_IMAGE);
 				System.IO.File.Copy(uploads, webRootPath + @"\images\" + MenuItemVM.MenuItem.Id + ".png");
 				menuItemFromDb.Image = @"\images\" + MenuItemVM.MenuItem.Id + ".png";
 			}
