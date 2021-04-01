@@ -49,7 +49,7 @@ namespace Spice
 			services.AddSession(options =>
 			{
 				options.Cookie.IsEssential = true;
-				options.IdleTimeout = TimeSpan.FromMinutes(30);
+				options.IdleTimeout = TimeSpan.FromMinutes(45);
 				options.Cookie.HttpOnly = true;
 
 			});

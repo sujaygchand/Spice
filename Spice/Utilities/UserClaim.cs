@@ -12,7 +12,6 @@ namespace Spice.Utilities
 
 		public Claim GetClaim(IIdentity identity)
 		{
-
 			var claimsIdentity = (ClaimsIdentity)identity;
 			var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 			return claim;
