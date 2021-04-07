@@ -93,7 +93,7 @@ namespace Spice.Areas.Identity.Pages.Account
 
                     List<ShoppingCart> shoppingCartItems = await _db.ShoppingCarts.Where(k => k.ApplicationUserId == user.Id).ToListAsync();
 
-                    HttpContext.Session.SetInt32(SessionDetails.SHOPPING_CART_COUNT, shoppingCartItems.Count);
+                    HttpContext.Session.SetInt32(SessionDetails.SS_SHOPPING_CART_COUNT, shoppingCartItems.Count);
 
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
