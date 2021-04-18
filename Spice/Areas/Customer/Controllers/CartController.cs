@@ -77,5 +77,56 @@ namespace Spice.Areas.Customer.Controllers
 
 			return RedirectToAction(nameof(Index));
 		}
+
+		public IActionResult RemoveCoupon()
+		{
+			HttpContext.Session.SetString(SessionDetails.SS_COUPON_CODE, string.Empty);
+			return RedirectToAction(nameof(Index));
+		}
+
+		public async Task<IActionResult> Plus(int cartId)
+		{
+			var cart = await _db.ShoppingCarts.FirstOrDefaultAsync(k => k.Id == cartId);
+
+			if (cart == null)
+				NotFound();
+
+			cart.Count++;
+			await _db.SaveChangesAsync();
+			return RedirectToAction(nameof(Index));
+		}
+
+		public async Task<IActionResult> Minus(int cartId)
+		{
+			var cart = await _db.ShoppingCarts.FirstOrDefaultAsync(k => k.Id == cartId);
+
+			if(cart.Count == 1)
+			{
+				await Remove(cartId);
+			}
+			else
+			{
+				cart.Count--;
+				await _db.SaveChangesAsync();
+			}
+
+			return RedirectToAction(nameof(Index));
+		}
+
+		public async Task<IActionResult> Remove(int cartId)
+		{
+			var cart = await _db.ShoppingCarts.FirstOrDefaultAsync(k => k.Id == cartId);
+
+			if (cart == null)
+				NotFound();
+
+			_db.ShoppingCarts.Remove(cart);
+			await _db.SaveChangesAsync();
+
+			var count = _db.ShoppingCarts.Where(k => k.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
+			HttpContext.Session.SetInt32(SessionDetails.SS_SHOPPING_CART_COUNT, count);
+
+			return RedirectToAction(nameof(Index));
+		}
 	}
 }
