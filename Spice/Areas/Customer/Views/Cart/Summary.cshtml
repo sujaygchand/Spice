@@ -36,7 +36,7 @@
 											<label>Name</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="@Model.OrderHeader.PickupName" type="text" class="form-control" />
+											<input asp-for="@Model.OrderHeader.PickupName" id="txtName" type="text" class="form-control" />
 										</div>
 									</div>
 									<div class="row my-1">
@@ -44,7 +44,7 @@
 											<label>Phone</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="@Model.OrderHeader.PhoneNumber" type="text" class="form-control" />
+											<input asp-for="@Model.OrderHeader.PhoneNumber" id="txtPhone" type="text" class="form-control" />
 										</div>
 									</div>
 									<div class="row my-1">
@@ -113,6 +113,13 @@
 						</div>
 					</div>
 					<div class="card-footer">
+						<div class="row">
+							<div class="col-12 col-md-4 offset-md-8">
+								<button type="submit" id="btnPlaceOrder" onclick="return validateInput()" value="Place Order" class="btn btn-success form-control">
+									Place Order
+								</button>
+							</div>
+						</div>
 					</div>
 
 				</div>
@@ -132,51 +139,42 @@
 
 	<script>
 		$(function () {
-
 			var minDate = 0;
+			var currentDate = new Date();
 
-			if (getTimeFromCurrentDate() >= 20) {
+			if (currentDate.getHours() >= 20) {
 				minDate = 1;
 			}
-
-			//alert('getTimeFromCurrentDate(): ' + getTimeFromCurrentDate());
-
-			$("#datepicker").datepicker({ dateFormat: 'dd/mm/yy', minDate: minDate, maxDate: "+2M" });
-			$("#timepicker").timepicker({ minTime: '10:00 AM', maxTime: '9:00 PM', step: '30' });
-
+			$("#datepicker").datepicker({ minDate: minDate, maxDate: "+1W" });
+			$("#timepicker").timepicker({ 'minTime': '10:00 AM', 'maxTime': '9:00 PM', step: '30' })
 		});
 
 		function setPickUpTime() {
-			var dateSelected = document.getElementById("#datepicker").value;
-			var date = new Date(dateSelected);
+			var dateSelected = document.getElementById("datepicker").value;
+			var dt = new Date(dateSelected);
 			var today = new Date();
-
-			date.setHours(0, 0, 0, 0);
-
-			if (date > today) {
+			dt.setHours(0, 0, 0, 0);
+			if (dt > today) {
 				selectedTime = '10:00am';
 			}
 			else {
 				selectedTime = getTimeFromCurrentDate();
 			}
-
-			$('#timepicker').timepicker('option', 'minTime', 'selectedTime');
+			$('#timepicker').timepicker('option', 'minTime', selectedTime);
 		}
 
 		function getTimeFromCurrentDate() {
-			var currentDate = new Date();
-
+			var curDt = new Date();
 			var minTime = "";
-
-			if (currentDate.getHours() < 10) {
+			if (curDt.getHours() < 10) {
 				minTime = '11:00am';
 			}
 			else {
-				if (currentDate.getMinutes() < 30) {
-					minTime = (currentDate.getHours() + 1) + ':30pm';
+				if (curDt.getMinutes() < 30) {
+					minTime = (curDt.getHours() + 1).toString() + ':30pm'
 				}
 				else {
-					minTime = (currentDate.getHours() + 2) + ':00pm';
+					minTime = (curDt.getHours() + 2).toString() + ':00pm'
 				}
 			}
 			return minTime;
@@ -185,6 +183,35 @@
 		$('#datepicker').change(function () {
 			setPickUpTime();
 		});
+
+		function validateInput() {
+			var time = document.getElementById("timepicker").value;
+			var date = document.getElementById("datepicker").value;
+			var name = document.getElementById("txtName").value;
+			var phone = document.getElementById("txtPhone").value;
+
+			if (date.toString() == '') {
+				alert("Please select Pickup Date");
+				return false;
+			}
+
+			if (time.toString() == '') {
+				alert("Please select Pickup Time");
+				return false;
+			}
+
+			if (name.toString() == '') {
+				alert("Please enter a Pickup Name");
+				return false;
+			}
+
+			if (phone.toString() == '') {
+				alert("Please enter a Pickup Phone Number");
+				return false;
+			}
+
+			return true;
+		}
 
 	</script>
 }
