@@ -165,7 +165,8 @@ namespace Spice.Areas.Customer.Controllers
 			HttpContext.Session.SetInt32(SessionDetails.SS_SHOPPING_CART_COUNT, 0);
 			await _db.SaveChangesAsync();
 
-			return RedirectToAction("Confirm", "Order", new { id = detailsCart.OrderHeader.Id });
+			return RedirectToAction("Index", "Home");
+			//return RedirectToAction("Confirm", "Order", new { id = detailsCart.OrderHeader.Id });
 		}
 
 		public IActionResult AddCoupon()

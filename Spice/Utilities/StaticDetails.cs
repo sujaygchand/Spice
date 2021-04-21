@@ -26,6 +26,8 @@ namespace Spice.Utilities
 		public const string PaymentStatusApproved = "Approved";
 		public const string PaymentStatusDeclined = "Declined";
 
+		public const string SecretKey = "SecretKey";
+
 		public static string ConvertToRawHtml(string source)
 		{
 			var charArray = new char[source.Length];

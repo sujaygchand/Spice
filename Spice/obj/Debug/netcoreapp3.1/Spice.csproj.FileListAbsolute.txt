@@ -413,8 +413,6 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\ru\Micr
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.MvcApplicationPartsAssemblyInfo.cs
-D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.MvcApplicationPartsAssemblyInfo.cache
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.Views.pdb
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.dll
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.pdb
@@ -495,3 +493,6 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\A
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_AddToCartAndBackToList.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Cart\Index.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Cart\Summary.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\Stripe.net.dll
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.MvcApplicationPartsAssemblyInfo.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.MvcApplicationPartsAssemblyInfo.cache

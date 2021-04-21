@@ -12,6 +12,8 @@ using Spice.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Spice.Utilities;
+using Stripe;
 
 namespace Spice
 {
@@ -36,6 +38,7 @@ namespace Spice
 				.AddDefaultTokenProviders()
 				.AddDefaultUI()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
 			services.AddControllersWithViews();
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -45,6 +48,8 @@ namespace Spice
 				options.LogoutPath = $"/Identity/Account/Logout";
 				options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 			});
+
+			services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
 
 			services.AddSession(options =>
 			{
@@ -70,6 +75,8 @@ namespace Spice
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")[StaticDetails.SecretKey];
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
