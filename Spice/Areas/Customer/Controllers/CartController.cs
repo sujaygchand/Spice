@@ -9,6 +9,7 @@ using Spice.Data;
 using Spice.Models;
 using Spice.Models.ViewModels;
 using Spice.Utilities;
+using Stripe;
 
 namespace Spice.Areas.Customer.Controllers
 {
@@ -16,7 +17,7 @@ namespace Spice.Areas.Customer.Controllers
 	public class CartController : Controller
 	{
 		private readonly ApplicationDbContext _db;
-		
+
 		[BindProperty]
 		public OrderDetailsCart detailsCart { get; set; }
 
@@ -51,7 +52,7 @@ namespace Spice.Areas.Customer.Controllers
 
 				list.MenuItem.Description = StaticDetails.ConvertToRawHtml(list.MenuItem.Description);
 
-				if(list.MenuItem.Description.Length > 100)
+				if (list.MenuItem.Description.Length > 100)
 				{
 					list.MenuItem.Description = list.MenuItem.Description.Substring(0, 99) + ".....";
 				}
@@ -59,12 +60,12 @@ namespace Spice.Areas.Customer.Controllers
 
 			detailsCart.OrderHeader.OrderTotalOrignal = detailsCart.OrderHeader.OrderTotal;
 
-			if(HttpContext.Session.GetString(SessionDetails.SS_COUPON_CODE) != null)
+			if (HttpContext.Session.GetString(SessionDetails.SS_COUPON_CODE) != null)
 			{
 				detailsCart.OrderHeader.CouponCode = HttpContext.Session.GetString(SessionDetails.SS_COUPON_CODE);
 				var couponFromDb = await _db.Coupon.Where(k => k.Name.ToLower() == detailsCart.OrderHeader.CouponCode.ToLower()).FirstOrDefaultAsync();
 
-				if(couponFromDb != null)
+				if (couponFromDb != null)
 					detailsCart.OrderHeader.OrderTotal = StaticDetails.DiscountedPrice(couponFromDb, detailsCart.OrderHeader.OrderTotalOrignal);
 			}
 
@@ -113,7 +114,7 @@ namespace Spice.Areas.Customer.Controllers
 
 		[HttpPost, ActionName("Summary")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> SummaryPost()
+		public async Task<IActionResult> SummaryPost(string stripeEmail, string stripeToken)
 		{
 			var claim = userClaim.GetClaim(User.Identity);
 
@@ -131,7 +132,7 @@ namespace Spice.Areas.Customer.Controllers
 
 			detailsCart.OrderHeader.OrderTotalOrignal = 0;
 
-			foreach(var item in detailsCart.ListCart)
+			foreach (var item in detailsCart.ListCart)
 			{
 				item.MenuItem = await _db.MenuItem.FirstOrDefaultAsync(k => k.Id == item.MenuItemId);
 				OrderDetails orderDetails = new OrderDetails
@@ -165,6 +166,48 @@ namespace Spice.Areas.Customer.Controllers
 			HttpContext.Session.SetInt32(SessionDetails.SS_SHOPPING_CART_COUNT, 0);
 			await _db.SaveChangesAsync();
 
+			// Stripe Logic
+			if (stripeToken != null)
+			{
+				var customers = new CustomerService();
+				var charges = new ChargeService();
+
+				var customer = customers.Create(new CustomerCreateOptions
+				{
+					Email = stripeEmail,
+					Source = stripeToken
+				});
+
+				var charge = charges.Create(new ChargeCreateOptions
+				{
+					Amount = Convert.ToInt32(detailsCart.OrderHeader.OrderTotal * 100),
+					Description = "Order ID : " + detailsCart.OrderHeader.Id,
+					Currency = "nzd",
+					Customer = customer.Id
+				});
+
+				detailsCart.OrderHeader.TransactionId = charge.BalanceTransactionId;
+
+				if (charge.Status.ToLower() == "succeeded")
+				{
+					//email for successful order
+
+					detailsCart.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusApproved;
+					detailsCart.OrderHeader.Status = StaticDetails.StatusSubmitted;
+				}
+				else
+				{
+					detailsCart.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDeclined;
+				}
+
+			}
+			else
+			{
+				detailsCart.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDeclined;
+			}
+
+
+			await _db.SaveChangesAsync();
 			return RedirectToAction("Index", "Home");
 			//return RedirectToAction("Confirm", "Order", new { id = detailsCart.OrderHeader.Id });
 		}
@@ -201,7 +244,7 @@ namespace Spice.Areas.Customer.Controllers
 		{
 			var cart = await _db.ShoppingCarts.FirstOrDefaultAsync(k => k.Id == cartId);
 
-			if(cart.Count == 1)
+			if (cart.Count == 1)
 			{
 				await Remove(cartId);
 			}
