@@ -18,6 +18,7 @@ namespace Spice.Areas.Customer.Controllers
 		private readonly ApplicationDbContext _db;
 		private UserClaim userClaim;
 
+		private int pageSize = 2;
 		public OrderController(ApplicationDbContext db)
 		{
 			_db = db;
@@ -38,17 +39,16 @@ namespace Spice.Areas.Customer.Controllers
 			return View(orderDetailsViewModel);
 		}
 
-		public IActionResult Index()
-		{
-			return View();
-		}
-
 		[Authorize]
-		public async Task<IActionResult> OrderHistory()
+		public async Task<IActionResult> OrderHistory(int productPage = 1)
 		{
 			var claim = userClaim.GetClaim(User.Identity);
 
-			var orderList = new List<OrderDetailsViewModel>();
+			OrderListViewModel orderListVM = new OrderListViewModel()
+			{
+				Orders = new List<OrderDetailsViewModel>()
+			};
+			
 			List<OrderHeader> orderHeaderList = await _db.OrderHeaders.Include(k => k.ApplicationUser).Where(k => k.UserId == claim.Value).ToListAsync();
 
 			foreach (var item in orderHeaderList)
@@ -59,10 +59,24 @@ namespace Spice.Areas.Customer.Controllers
 					OrderDetails = await _db.OrderDetails.Where(k => k.OrderId == item.Id).ToListAsync()
 				};
 
-				orderList.Add(currentOrder);
+				orderListVM.Orders.Add(currentOrder);
 			}
 
-			return View(orderList);
+			var count = orderListVM.Orders.Count;
+
+			orderListVM.Orders = orderListVM.Orders.OrderByDescending(k => k.OrderHeader)
+								.Skip((productPage - 1) * pageSize)
+								.Take(pageSize).ToList();
+
+			orderListVM.PagingInfo = new PagingInfo()
+			{
+				CurrentPage = productPage,
+				ItemsPerPage = pageSize,
+				TotalItems = count,
+				UrlParam = "/Customer/Order/OrderHistory?productPage=:"
+			};
+
+			return View(orderListVM);
 		}
 
 		public async Task<IActionResult> GetOrderDetails(int Id)
