@@ -68,7 +68,7 @@ namespace Spice.Areas.Customer.Controllers
 								.Skip((productPage - 1) * pageSize)
 								.Take(pageSize).ToList();
 
-			orderListVM.PagingInfo = new PagingInfo()
+			orderListVM.PagingInfo = new PagingInfo
 			{
 				CurrentPage = productPage,
 				ItemsPerPage = pageSize,

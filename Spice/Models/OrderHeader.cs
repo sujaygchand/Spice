@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Spice.Models
 {
-	public class OrderHeader
+	public class OrderHeader : IComparable
 	{
 		[Key]
 		public int Id { get; set; }
@@ -52,5 +52,12 @@ namespace Spice.Models
 		public string PhoneNumber { get; set; }
 
 		public string TransactionId { get; set; }
+		public int CompareTo(object? obj)
+		{
+			if (obj == null)
+				return 0;
+
+			return 1;
+		}
 	}
 }
