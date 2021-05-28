@@ -49,8 +49,6 @@ namespace Spice
 				options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 			});
 
-			services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
-
 			services.AddSession(options =>
 			{
 				options.Cookie.IsEssential = true;
@@ -75,8 +73,7 @@ namespace Spice
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-
-			StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")[StaticDetails.SecretKey];
+			
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 

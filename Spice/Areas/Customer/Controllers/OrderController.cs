@@ -18,7 +18,7 @@ namespace Spice.Areas.Customer.Controllers
 		private readonly ApplicationDbContext _db;
 		private UserClaim userClaim;
 
-		private int pageSize = 2;
+		private int pageSize = 4;
 		public OrderController(ApplicationDbContext db)
 		{
 			_db = db;
