@@ -1,7 +1,6 @@
 ﻿@model Spice.Models.ViewModels.OrderDetailsCart
 @using Microsoft.Extensions.Options
-
-@inject IOptions<Spice.Utilities.StripeSettings> Stripe
+@using Spice.Utilities
 
 @{
 	ViewData["Title"] = "Summary";
@@ -130,7 +129,7 @@
 								}
 
 									<script src="https://checkout.stripe.com/checkout.js" class="stripe-button" 
-											data-key="@Stripe.Value.PublishableKey" 
+											data-key=@StripeSettings.PublishableKey 
 											data-amount="@OrderTotalForStripe" 
 											data-name="Spice Restaurant"
 											data-label="Place Order"
