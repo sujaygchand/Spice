@@ -23,7 +23,7 @@ namespace Spice
 		
 		public static void InitlialiseEnv()
 		{
-			string filePath = string.Format("{0}\\{1}", Directory.GetCurrentDirectory(), ".env");
+			string filePath = string.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "StripeKeys.env");
 			
 			if (!File.Exists(filePath))
 				return;
