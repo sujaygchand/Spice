@@ -103,5 +103,28 @@ namespace Spice.Areas.Customer.Controllers
 				
 			return PartialView("_OrderStatus", orderHeader.Status);
 		}
+
+		[Authorize(Roles = StaticDetails.KitchenUser + "," + StaticDetails.ManagerUser)]
+		public async Task<IActionResult> ManageOrder(int productPage = 1)
+		{
+			List<OrderDetailsViewModel> orderDetailsVM = new List<OrderDetailsViewModel>();
+
+			List<OrderHeader> orderHeaderList = await _db.OrderHeaders.Where(k =>
+					k.Status == StaticDetails.StatusSubmitted || k.Status == StaticDetails.StatusInProcess)
+				.OrderByDescending(k => k.PickUpTime).ToListAsync();
+
+			foreach (var item in orderHeaderList)
+			{
+				OrderDetailsViewModel currentDetails = new OrderDetailsViewModel
+				{
+					OrderHeader = item,
+					OrderDetails = await _db.OrderDetails.Where(k => k.OrderId == item.Id).ToListAsync()
+				};
+				
+				orderDetailsVM.Add(currentDetails);
+			}
+
+			return View(orderDetailsVM.OrderBy(k => k.OrderHeader.PickUpTime).ToList());
+		}
 	}
 }

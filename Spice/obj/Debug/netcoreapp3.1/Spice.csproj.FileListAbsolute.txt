@@ -500,3 +500,4 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\A
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_IndividualOrderDetails.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Order\OrderHistory.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_OrderStatus.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Order\ManageOrder.cshtml.g.cs
