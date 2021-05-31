@@ -9,6 +9,7 @@ using Spice.Data;
 using Spice.Models;
 using Spice.Models.ViewModels;
 using Spice.Utilities;
+using Stripe;
 
 namespace Spice.Areas.Customer.Controllers
 {
@@ -91,6 +92,16 @@ namespace Spice.Areas.Customer.Controllers
 				await _db.ApplicationUser.FirstOrDefaultAsync(k => k.Id == orderDetailsViewModel.OrderHeader.UserId);
 
 			return PartialView("_IndividualOrderDetails", orderDetailsViewModel);
+		}
+
+		public IActionResult GetOrderStatus(int id)
+		{
+			var orderHeader = _db.OrderHeaders.FirstOrDefault( k => k.Id == id);
+
+			if (orderHeader == null)
+				return NotFound();
+				
+			return PartialView("_OrderStatus", orderHeader.Status);
 		}
 	}
 }

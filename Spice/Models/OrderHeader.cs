@@ -59,5 +59,10 @@ namespace Spice.Models
 
 			return 1;
 		}
+
+		public bool IsStatusEqualTo(string status)
+		{
+			return Status == status;
+		}
 	}
 }

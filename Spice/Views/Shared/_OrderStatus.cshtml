@@ -1,0 +1,20 @@
+﻿@Model string
+@using Spice.Utilities
+
+<div style="width:100%">
+    @switch (Model)
+    {
+        case StaticDetails.StatusSubmitted:
+            <img src="~/images/OrderPlaced.png" width="100%"/>
+            break;
+        case StaticDetails.StatusInProcess:
+            <img src="~/images/InKitchen.png" width="100%"/>
+            break;
+        case StaticDetails.StatusReady:
+            <img src="~/images/ReadyForPickup.png" width="100%"/>
+            break;
+        case StaticDetails.StatusCompleted:
+            <img src="~/images/completed.png" width="100%"/>
+            break;
+    }
+</div>
