@@ -37,6 +37,7 @@ namespace Spice.Areas.Customer.Controllers
 				OrderDetails = await _db.OrderDetails.Where(k => k.OrderId == id).ToListAsync()
 			};
 
+			orderDetailsViewModel.OrderHeader.Status = StaticDetails.StatusSubmitted;
 			return View(orderDetailsViewModel);
 		}
 
@@ -125,6 +126,23 @@ namespace Spice.Areas.Customer.Controllers
 			}
 
 			return View(orderDetailsVM.OrderBy(k => k.OrderHeader.PickUpTime).ToList());
+		}
+
+		[Authorize(Roles = StaticDetails.KitchenUser + "," + StaticDetails.ManagerUser)]
+		public async Task<IActionResult> UpdateOrderStatus(int OrderId, string Status = StaticDetails.StatusInProcess,
+		                                                   bool sendEmailUpdate = false)
+		{
+			OrderHeader orderHeader = await _db.OrderHeaders.FindAsync(OrderId);
+			orderHeader.Status = Status;
+			await _db.SaveChangesAsync();
+
+			// Send email upadte to user
+			if (sendEmailUpdate)
+			{
+				
+			}
+			
+			return RedirectToAction("ManageOrder", "Order");
 		}
 	}
 }
