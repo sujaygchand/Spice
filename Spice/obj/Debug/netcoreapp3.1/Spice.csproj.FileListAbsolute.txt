@@ -1,6 +1,5 @@
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\appsettings.json
-D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\Spice.StaticWebAssets.xml
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\Spice.exe
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
@@ -29,7 +28,6 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\runtime
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\Libraries\Documents\.NET Projects\Spice\Spice\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.csprojAssemblyReference.cache
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\staticwebassets\Spice.StaticWebAssets.Manifest.cache
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\staticwebassets\Spice.StaticWebAssets.xml
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.RazorAssemblyInfo.cache
@@ -501,3 +499,8 @@ D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\V
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Order\OrderHistory.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_OrderStatus.cshtml.g.cs
 D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Order\ManageOrder.cshtml.g.cs
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.csproj.AssemblyReference.cache
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.csproj.CoreCompileInputs.cache
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\scopedcss\bundle\Spice.styles.css
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Spice.genruntimeconfig.cache
+D:\Libraries\Documents\.NET Projects\Spice\Spice\obj\Debug\netcoreapp3.1\Razor\Areas\Customer\Views\Order\OrderPickup.cshtml.g.cs

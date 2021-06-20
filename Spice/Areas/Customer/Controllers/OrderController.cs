@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace Spice.Areas.Customer.Controllers
 		private readonly ApplicationDbContext _db;
 		private UserClaim userClaim;
 
-		private int pageSize = 4;
+		private int pageSize = 3;
 		public OrderController(ApplicationDbContext db)
 		{
 			_db = db;
@@ -144,5 +145,96 @@ namespace Spice.Areas.Customer.Controllers
 			
 			return RedirectToAction("ManageOrder", "Order");
 		}
+
+		[Authorize]
+		public async Task<IActionResult> OrderPickup(int productPage = 1, string searchName = null, string searchEmail = null, string searchPhone = null)
+		{
+			OrderListViewModel orderListVM = new OrderListViewModel()
+			{
+				Orders = new List<OrderDetailsViewModel>()
+			};
+
+			StringBuilder param = new StringBuilder();
+			param.Append("/Customer/Order/OrderPickup?productPage=:");
+			
+			param.Append("&searchName=");
+			if (!String.IsNullOrWhiteSpace(searchName))
+			{
+				param.Append(searchName);
+			}
+
+			param.Append("&searchEmail=");
+			if (!String.IsNullOrWhiteSpace(searchEmail))
+			{
+				param.Append(searchEmail);
+			}
+
+			param.Append("&searchPhone=");
+			if (!String.IsNullOrWhiteSpace(searchPhone))
+			{
+				param.Append(searchPhone);
+			}
+
+			List<OrderHeader> orderHeaderList = new List<OrderHeader>();
+
+			if (!String.IsNullOrWhiteSpace(searchName) || !String.IsNullOrWhiteSpace(searchEmail) ||
+			    !String.IsNullOrWhiteSpace(searchPhone))
+			{
+				ApplicationUser user = new ApplicationUser();
+
+				if (!String.IsNullOrWhiteSpace(searchName))
+				{
+					orderHeaderList = await _db.OrderHeaders.Include(k => k.ApplicationUser)
+															.Where(k => k.PickupName.ToLower().Contains(searchName.ToLower()))
+															.OrderByDescending(k => k.OrderDate).ToListAsync();
+				}
+				else if (!String.IsNullOrWhiteSpace(searchEmail))
+				{
+					user = await _db.ApplicationUser.Where(k => k.Email.ToLower().Contains(searchEmail.ToLower()))
+						.FirstOrDefaultAsync();
+					orderHeaderList = await _db.OrderHeaders.Include(k => k.ApplicationUser)
+															.Where(k => k.UserId == user.Id)
+															.OrderByDescending(k => k.OrderDate).ToListAsync();
+				}
+				else if (!String.IsNullOrWhiteSpace(searchPhone))
+				{
+					orderHeaderList = await _db.OrderHeaders.Include(k => k.ApplicationUser)
+						.Where(k => k.PhoneNumber.Contains(searchPhone))
+						.OrderByDescending(k => k.OrderDate).ToListAsync();
+				}
+			}
+			else
+			{
+				orderHeaderList = await _db.OrderHeaders.Include(k => k.ApplicationUser).Where(k => k.Status == StaticDetails.StatusReady).ToListAsync();
+			}
+			
+			foreach (var item in orderHeaderList)
+			{
+				var currentOrder = new OrderDetailsViewModel
+				{
+					OrderHeader = item,
+					OrderDetails = await _db.OrderDetails.Where(k => k.OrderId == item.Id).ToListAsync()
+				};
+
+				orderListVM.Orders.Add(currentOrder);
+			}
+
+			var count = orderListVM.Orders.Count;
+
+			orderListVM.Orders = orderListVM.Orders.OrderByDescending(k => k.OrderHeader)
+								.Skip((productPage - 1) * pageSize)
+								.Take(pageSize).ToList();
+
+			orderListVM.PagingInfo = new PagingInfo
+			{
+				CurrentPage = productPage,
+				ItemsPerPage = pageSize,
+				TotalItems = count,
+				UrlParam = param.ToString()
+			};
+
+			return View(orderListVM);
+		}
+
 	}
 }

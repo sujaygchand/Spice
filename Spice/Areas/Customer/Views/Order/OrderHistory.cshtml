@@ -10,7 +10,7 @@
 <div class="border backgroundWhite">
     <div class="row">
         <div class="col-6">
-            <h2 class="text-info"> Category List</h2>
+            <h2 class="text-info"> Past Order List</h2>
         </div>
         <div class="col-6 text-right">
             <partial name="_CreateButtonPartial"/>
@@ -64,12 +64,12 @@
                         <td>
                             @Html.DisplayFor(k => item.OrderDetails.Count)
                         </td>
-                        
+
                         <td>
                             <button type="submit" class="btn btn-success btnOrderDetail" data-id="@item.OrderHeader.Id" data-toggle="modal">
                                 <i class="far fa-list-alt"></i>&nbsp;Details
                             </button>
-                            
+
                             @if (!item.OrderHeader.IsStatusEqualTo(StaticDetails.StatusCancelled))
                             {
                                 <button type="submit" class="btn btn-info btnOrderStatus" data-id="@item.OrderHeader.Id" data-toggle="modal">
@@ -84,7 +84,7 @@
                  page-class-normal="btn btn-light" page-class-selected="btn btn-info active"
                  class="btn-group float-right">
             </div>
-            <br />
+            <br/>
         }
         else
         {
@@ -94,13 +94,18 @@
 </div>
 
 <div class="modal fade" id="myOrderDetails" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog-centered modal-dialog modal-lg" role="document">
+    <div class="modal-dialog-centered modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success text-light justify-content-center">
                 <h5 class="modal-title">Order Details</h5>
+                <div class="col-1">
+                    <button type="button" class="float-right btn-outline-secondary close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body justify-content-center" id="myOrderDetailsContent">
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" style="width:20%" data-dismiss="modal">Close</button>
@@ -108,12 +113,11 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="myOrderStatus" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info text-light justify-content-center">
-                <h5 class="modal-title">Order Status</h5>
+                <h5 class="modal-title">Order Status </h5>
             </div>
             <div class="modal-body justify-content-center" id="myOrderStatusContent">
             </div>
@@ -127,10 +131,31 @@
 @section Scripts
 {
     <script>
-    var PostBackURL = '/Customer/Order/GetOrderDetails';
+    var OrderDetailsURL = '/Customer/Order/GetOrderDetails';
     var OrderStatusURL = '/Customer/Order/GetOrderStatus';
 
     $(function (){
+        
+             $(".btnOrderStatus").click(function (){
+                 var $buttonClicked = $(this);
+                 var id = $buttonClicked.attr('data-id');
+                 $.ajax({
+                    type: "GET",
+                    url: OrderStatusURL,
+                    contentType: "text/html; charset=utf-8",
+                    data: {"Id": id},
+                    cache: false,
+                    dataType: "html",
+                    success: function (data){
+                        $('#myOrderStatusContent').html(data);
+                        $('#myOrderStatus').modal('show');
+                        },
+                        error: function () {
+                            alert("Dynamic content load failed")                    
+                        } 
+                 });
+             });
+        
      $(".btnOrderDetail").click(function () {
          
          var $buttonClicked = $(this);
@@ -138,7 +163,7 @@
          
          $.ajax({
             type: "GET",
-            url: PostBackURL,
+            url: OrderDetailsURL,
             contentType: "application/json; charset=utf-8",
             data: {"Id": id},
             cache: false,
@@ -153,25 +178,6 @@
          });
      });
      
-     $(".btnOrderStatus").click(function (){
-         var $buttonClicked = $(this);
-         var id = $buttonClicked.attr("data-id");
-         $.ajax({
-            type: "GET",
-            url: OrderStatusURL,
-            contentType: "text/html; charset=utf-8",
-            data: {"Id": id},
-            cache: false,
-            dataType: "html",
-            success: function (data){
-                $('#myOrderStatusContent').html(data);
-                $('#myOrderStatus').modal('show');
-                },
-                error: function () {
-                    alert("Dynamic content load failed")                    
-                } 
-         });
-     });
         
     });
     </script>
