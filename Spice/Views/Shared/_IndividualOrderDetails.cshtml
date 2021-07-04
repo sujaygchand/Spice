@@ -1,6 +1,7 @@
-﻿@model Spice.Models.ViewModels.OrderDetailsViewModel
+﻿@using Spice.Utilities
+@model Spice.Models.ViewModels.OrderDetailsViewModel
 
-<form method="post">
+<form asp-controller="Order">
 	<div class="container row border ml-1 backgroundWhiteBorder10Padding" style="width:100%">
 		<div class="col-lg-8 col-12" style="border-right:1px solid #bbb9b9">
 			<br />
@@ -88,7 +89,7 @@
 							<small>@Model.OrderHeader.CouponCode</small>
 						</div>
 						@{ var total = Model.OrderHeader.OrderTotalOrignal - Model.OrderHeader.OrderTotal; }
-						<span>$@(total.ToString("n2"))</span>
+						<span class="text-success">$@(total.ToString("n2"))</span>
 					</li>
 				}
 				<li class="list-group-item d-flex justify-content-between bg-light">
@@ -97,7 +98,14 @@
 				</li>
 			</ul>
 
-			<button type="submit" disabled class="btn btn-info form-control">@Model.OrderHeader.Status</button>
+			@if (Model.OrderHeader.Status.Equals(StaticDetails.StatusReady) && (User.IsInRole(StaticDetails.ManagerUser) || User.IsInRole(StaticDetails.FrontDeskUser)))
+			{
+				<button type="submit"  asp-action="UpdateOrderStatus" asp-route-OrderId="@Model.OrderHeader.Id" asp-route-status="@StaticDetails.StatusCompleted" asp-route-redirectPage="OrderPickup" class="btn btn-success form-control"><i class="far fa-thumbs-up"></i>  Confirm Pickup</button>
+			}
+			else
+			{
+				<button type="submit" disabled class="btn btn-info form-control">@Model.OrderHeader.Status</button>	
+			}
 		</div>
 	</div>
 </form>
