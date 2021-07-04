@@ -130,11 +130,11 @@ namespace Spice.Areas.Customer.Controllers
 		}
 
 		[Authorize(Roles = StaticDetails.KitchenUser + "," + StaticDetails.ManagerUser)]
-		public async Task<IActionResult> UpdateOrderStatus(int OrderId, string Status = StaticDetails.StatusInProcess,
+		public async Task<IActionResult> UpdateOrderStatus(int orderId, string status = StaticDetails.StatusInProcess, string redirectPage = "ManageOrder",
 		                                                   bool sendEmailUpdate = false)
 		{
-			OrderHeader orderHeader = await _db.OrderHeaders.FindAsync(OrderId);
-			orderHeader.Status = Status;
+			OrderHeader orderHeader = await _db.OrderHeaders.FindAsync(orderId);
+			orderHeader.Status = status;
 			await _db.SaveChangesAsync();
 
 			// Send email upadte to user
@@ -143,7 +143,7 @@ namespace Spice.Areas.Customer.Controllers
 				
 			}
 			
-			return RedirectToAction("ManageOrder", "Order");
+			return RedirectToAction(redirectPage, "Order");
 		}
 
 		[Authorize]
