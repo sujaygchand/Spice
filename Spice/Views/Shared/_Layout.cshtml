@@ -49,9 +49,9 @@
 							</li>
 						}
 
-						@if (User.IsInRole(StaticDetails.ManagerUser) || User.IsInRole(StaticDetails.CustomerEndUser))
+						@if (User.IsInRole(StaticDetails.ManagerUser) || User.IsInRole(StaticDetails.CustomerEndUser) || User.IsInRole(StaticDetails.FrontDeskUser) || User.IsInRole(StaticDetails.KitchenUser))
 						{
-							<li class="nav-link">
+							<li class="nav-item">
 								<a asp-area="Customer" asp-controller="Order" asp-action="OrderHistory" class="nav-link">
 									Order history
 								</a>
