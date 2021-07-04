@@ -42,6 +42,19 @@ namespace Spice
 			services.AddControllersWithViews();
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
+			services.AddAuthentication().AddFacebook(facebookOptions => 
+			{
+				facebookOptions.AppId = SessionDetails.FacebookAppId;
+				facebookOptions.AppSecret = SessionDetails.FacebookSecretKey;
+
+			});
+
+			services.AddAuthentication().AddGoogle(googleOptions =>
+			{
+				googleOptions.ClientId = SessionDetails.GoogleClientId;
+				googleOptions.ClientSecret = SessionDetails.GoogleSecretKey;			
+			});
+
 			services.ConfigureApplicationCookie(options =>
 			{
 				options.LoginPath = $"/Identity/Account/Login";
