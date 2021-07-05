@@ -23,5 +23,10 @@ namespace Spice.Utilities
 
 		private const String GOOGLE_CLIENT_ID = "GOOGLE__CLIENTID";
 		private const String GOOGLE_SECRET_KEY = "GOOGLE__SECRETKEY";
+		
+		/* Send Grid, used for sending emails */
+		public static string SendGridKey => Environment.GetEnvironmentVariable(SEND_GRID_KEY);
+
+		private const String SEND_GRID_KEY = "SENDGRID__KEY";
 	}
 }
