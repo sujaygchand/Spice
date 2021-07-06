@@ -135,7 +135,7 @@ namespace Spice.Areas.Customer.Controllers
 
 		[Authorize(Roles = StaticDetails.KitchenUser + "," + StaticDetails.ManagerUser)]
 		public async Task<IActionResult> UpdateOrderStatus(int orderId, string status = StaticDetails.StatusInProcess, string redirectPage = "ManageOrder",
-		                                                   bool sendEmailUpdate = false)
+		                                                   bool sendEmailUpdate = true)
 		{
 			OrderHeader orderHeader = await _db.OrderHeaders.FindAsync(orderId);
 			orderHeader.Status = status;
