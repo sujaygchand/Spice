@@ -27,7 +27,7 @@ namespace Spice.Service
 			var client = new SendGridClient(sendGridKey);
 			var msg = new SendGridMessage()
 			{
-				From = new EmailAddress("admin@spice.com", "Spice Test Project"),
+				From = new EmailAddress("thesujaygchand@gmail.com", "Spice Test Project"),
 				Subject = subject,
 				PlainTextContent = message,
 				HtmlContent = message

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Spice.Data;
@@ -18,15 +19,17 @@ namespace Spice.Areas.Customer.Controllers
 	public class CartController : Controller
 	{
 		private readonly ApplicationDbContext _db;
+		private readonly IEmailSender _emailSender;
 
 		[BindProperty]
 		public OrderDetailsCart detailsCart { get; set; }
 
 		private UserClaim userClaim;
 
-		public CartController(ApplicationDbContext db)
+		public CartController(ApplicationDbContext db, IEmailSender emailSender)
 		{
 			_db = db;
+			_emailSender = emailSender;
 			userClaim = userClaim ?? new UserClaim();
 		}
 
@@ -191,8 +194,13 @@ namespace Spice.Areas.Customer.Controllers
 
 				if (charge.Status.ToLower() == "succeeded")
 				{
+					string subject = String.Format("Spice - Order Created {0}", detailsCart.OrderHeader.Id.ToString());
+					string successMessage = "Order has been submitted successfully.";
 					//email for successful order
-
+					await _emailSender.SendEmailAsync(
+						_db.Users.Where(k => k.Id == claim.Value).FirstOrDefault().Email,
+						subject, successMessage);
+						
 					detailsCart.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusApproved;
 					detailsCart.OrderHeader.Status = StaticDetails.StatusSubmitted;
 				}
