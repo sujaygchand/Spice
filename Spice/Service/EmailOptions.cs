@@ -1,7 +1,9 @@
-﻿namespace Spice.Service
+﻿using Spice.Utilities;
+
+namespace Spice.Service
 {
 	public class EmailOptions
 	{
-		public string SendGridKey { get; set; }
+		public string SendGridKey => SessionDetails.SendGridKey;
 	}
 }
