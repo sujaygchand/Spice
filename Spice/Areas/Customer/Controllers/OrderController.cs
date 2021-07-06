@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Spice.Data;
 using Spice.Models;
 using Spice.Models.ViewModels;
@@ -18,12 +20,14 @@ namespace Spice.Areas.Customer.Controllers
 	public class OrderController : Controller
 	{
 		private readonly ApplicationDbContext _db;
+		private readonly IEmailSender _emailSender;
 		private UserClaim userClaim;
 
 		private int pageSize = 3;
-		public OrderController(ApplicationDbContext db)
+		public OrderController(ApplicationDbContext db, IEmailSender emailSender)
 		{
 			_db = db;
+			_emailSender = emailSender;
 			userClaim = userClaim ?? new UserClaim();
 		}
 
@@ -131,7 +135,7 @@ namespace Spice.Areas.Customer.Controllers
 
 		[Authorize(Roles = StaticDetails.KitchenUser + "," + StaticDetails.ManagerUser)]
 		public async Task<IActionResult> UpdateOrderStatus(int orderId, string status = StaticDetails.StatusInProcess, string redirectPage = "ManageOrder",
-		                                                   bool sendEmailUpdate = false)
+		                                                   bool sendEmailUpdate = true)
 		{
 			OrderHeader orderHeader = await _db.OrderHeaders.FindAsync(orderId);
 			orderHeader.Status = status;
@@ -140,7 +144,28 @@ namespace Spice.Areas.Customer.Controllers
 			// Send email upadte to user
 			if (sendEmailUpdate)
 			{
+				string message = "";
 				
+				switch (status)
+				{
+					case StaticDetails.StatusInProcess:
+						message = "Cooking for order has started.";
+						break;
+					case StaticDetails.StatusReady:
+						message = "Order is ready for pickup.";
+						break;
+					case StaticDetails.StatusSubmitted:
+						message = "Order has been submitted successfully.";
+						break;
+					case StaticDetails.StatusCancelled:
+						message = "Order has been cancelled successfully.";
+						break;
+					case StaticDetails.StatusCompleted:
+						message = "Order has been completed successfully.";
+						break;
+				}
+
+				await SendEmailOnStatusChange(orderHeader, status, message);
 			}
 			
 			return RedirectToAction(redirectPage, "Order");
@@ -234,6 +259,12 @@ namespace Spice.Areas.Customer.Controllers
 			};
 
 			return View(orderListVM);
+		}
+
+		private async Task SendEmailOnStatusChange(OrderHeader orderHeader, string statusSubject, string message)
+		{
+			string subject = String.Format("Spice - Order {0} {1}", statusSubject, orderHeader.Id.ToString());
+			await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().Email, subject, message);
 		}
 
 	}
